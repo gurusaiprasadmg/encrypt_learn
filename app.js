@@ -4,7 +4,7 @@ const express = require('express')
 const app = express();
 const mongoose = require('mongoose')
 const ejs = require('ejs')
-
+const encrypt = require('mongoose-encryption')
 
 
 // ==== mongoose connection ==== //
@@ -14,7 +14,8 @@ const userSchema = mongoose.Schema({
   email: String,
   password:String
 })
-
+const secret = 'superkalafrajalisticspladocious'
+userSchema.plugin(encrypt, { secret:secret ,encryptedFields: ['password']});
 // ==== user mogdel ==== //
 const User = new mongoose.model('User',userSchema)
 
