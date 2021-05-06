@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config()
 const port = 4000;
 const express = require('express')
 const app = express();
