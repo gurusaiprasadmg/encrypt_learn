@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config()
 const port = 4000;
 const express = require('express')
 const app = express();
@@ -14,8 +15,8 @@ const userSchema = mongoose.Schema({
   email: String,
   password:String
 })
-const secret = 'superkalafrajalisticspladocious'
-userSchema.plugin(encrypt, { secret:secret ,encryptedFields: ['password']});
+
+userSchema.plugin(encrypt, { secret:process.env.SECRET ,encryptedFields: ['password']});
 // ==== user mogdel ==== //
 const User = new mongoose.model('User',userSchema)
 
