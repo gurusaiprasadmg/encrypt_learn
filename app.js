@@ -1,11 +1,10 @@
 //jshint esversion:6
-require('dotenv').config()
 const port = 4000;
 const express = require('express')
 const app = express();
 const mongoose = require('mongoose')
 const ejs = require('ejs')
-const encrypt = require('mongoose-encryption')
+const md5 = require('md5')
 
 
 // ==== mongoose connection ==== //
@@ -15,8 +14,6 @@ const userSchema = mongoose.Schema({
   email: String,
   password:String
 })
-
-userSchema.plugin(encrypt, { secret:process.env.SECRET ,encryptedFields: ['password']});
 // ==== user mogdel ==== //
 const User = new mongoose.model('User',userSchema)
 
@@ -41,7 +38,7 @@ app.get('/register',(req,res)=>{
 app.post('/register',(req,res)=>{
   var newuser = new User({
     email: req.body.username,
-    password: req.body.password
+    password: md5(req.body.password)
   });
   newuser.save((err)=>{
     if(!err){
@@ -56,7 +53,7 @@ app.post('/login',(req,res)=>{
   User.findOne({email:req.body.username},(err,found)=>{
     if (!err){
       if(found){
-        if(found.password === req.body.password){
+        if(found.password === md5(req.body.password)){
           res.render('secrets')
         }else{
           console.log('not found')
