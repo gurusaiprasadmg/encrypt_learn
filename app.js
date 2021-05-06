@@ -15,8 +15,8 @@ const userSchema = mongoose.Schema({
   email: String,
   password:String
 })
-const secret = 'superkalafrajalisticspladocious'
-userSchema.plugin(encrypt, { secret:secret ,encryptedFields: ['password']});
+
+userSchema.plugin(encrypt, { secret:process.env.SECRET ,encryptedFields: ['password']});
 // ==== user mogdel ==== //
 const User = new mongoose.model('User',userSchema)
 
